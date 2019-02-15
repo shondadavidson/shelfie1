@@ -33,7 +33,7 @@ class Form extends Component {
 
     postProduct() {
         const {name, price, img} = this.state;
-        axios.post('/api/product', {name: name, price: price, img: img}).then( res => {
+        axios.post('/api/inventory', {name: name, price: price, img: img}).then( res => {
             this.setState({
                 products: res.data,
                 name: '',

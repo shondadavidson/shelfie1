@@ -10,35 +10,68 @@ class Dashboard extends Component {
             products: [],
             name: '',
             price: '',
-            img: ''
+            img: '',
+            editing: false
         }
     }
 
     componentDidMount() {
-        axios.get('/api/messages').then( res => {
-            console.log(res.data)
+        axios.get('/api/inventory').then( res => {
+            // console.log(res.data)
             this.setState({
                 products: res.data
             })
         })
     }
+
+    deleteProduct = id => {
+        console.log(id)
+        axios.delete(`/api/inventory/${id}`).then(res => {
+            this.setState({
+                products: res.data
+            })
+        })
+    }
+
+    // onEdit = product => {
+    //     const {product} = this.props
+    //     console.log('edit')
+    //     this.setState({
+    //         editing: true})
+    //     this.props.setEdit(product.name, product.price, product.img)
+    // }
+
+    // editProduct = id => {
+    //     this.props.editProduct(id)
+
+    //     this.setState({
+    //         editing: false
+    //     })
+    // }
         
            
 
     render () {
-        // const mappedProducts = this.state.products.map(product => {
-        //     return (
-        //         key={products.id}
-        //         name={name}
-        //         price={price}
-        //         img={img}
-        //     )
-        // })
+        const mappedProducts = this.state.products.map( product => {
+            
+            return (
+                <Product 
+                key={product.id}
+                product={product}
+                deleteProduct={this.deleteProduct}
+                />
+             
+            )
+        })
+        // console.log(mappedProducts)
         return(
+            
             <div>
-                <p>dashboard</p>
-                <Product />
-                {/* {mappedProducts} */}
+                
+                <p>Dashboard--</p>
+                
+                {mappedProducts}
+                
 
             </div>
         )
