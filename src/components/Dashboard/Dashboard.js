@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Product from '../Product/Product'
+import Form from '../Form/Form'
 import axios from 'axios';
 
 class Dashboard extends Component {
@@ -11,7 +12,8 @@ class Dashboard extends Component {
             name: '',
             price: '',
             img: '',
-            editing: false
+            editing: false,
+            input: ''
         }
     }
 
@@ -33,21 +35,30 @@ class Dashboard extends Component {
         })
     }
 
-    // onEdit = product => {
-    //     const {product} = this.props
-    //     console.log('edit')
-    //     this.setState({
-    //         editing: true})
-    //     this.props.setEdit(product.name, product.price, product.img)
-    // }
+    onEdit = product => {
+        console.log('edit')
+        this.setState({
+            name: '',
+            price: '',
+            img: ''
+        })
+    }
 
-    // editProduct = id => {
-    //     this.props.editProduct(id)
+    editProduct = id => {
+        const {name, price, img} = this.state
+        console.log(id)
+        axios.put(`/api/inventory/${id}`, {name: name, price: price, img: img}).then(res => {
+            this.setState({
+                products: res.data,
+                name: '',
+                price: '',
+                img: '',
+                editing: false
 
-    //     this.setState({
-    //         editing: false
-    //     })
-    // }
+            })
+        })
+
+    }
         
            
 
@@ -69,6 +80,9 @@ class Dashboard extends Component {
             <div>
                 
                 <p>Dashboard--</p>
+                <Form 
+                onEdit={this.onEdit}
+                editProduct={this.editProduct}/>
                 
                 {mappedProducts}
                 
